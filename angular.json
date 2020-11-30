@@ -47,9 +47,15 @@
             "aot": true,
             "assets": [
               "projects/exercises/src/favicon.ico",
-              "projects/exercises/src/assets"
+              "projects/exercises/src/assets",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
+              "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
               "projects/exercises/src/styles.scss"
             ],
             "scripts": []
@@ -113,6 +119,7 @@
               "projects/exercises/src/assets"
             ],
             "styles": [
+              "./node_modules/ng-zorro-antd/ng-zorro-antd.min.css",
               "projects/exercises/src/styles.scss"
             ],
             "scripts": []

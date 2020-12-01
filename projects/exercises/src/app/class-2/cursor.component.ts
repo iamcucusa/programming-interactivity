@@ -12,12 +12,12 @@ export class CursorComponent implements OnInit {
     // @ts-ignore
     @ViewChild('cursor', {static: true}) canvasCursorREf: ElementRef<HTMLCanvasElement>;
     // @ts-ignore
-    private ctx: CanvasRenderingContext2D;
+    private context: CanvasRenderingContext2D;
     private canvasCursor: HTMLCanvasElement | undefined;
 
     canvasWidth = 1000;
     canvasHeight = 500;
-    easeFactor = 0.25;
+    easeFactor = 0.75;
 
 
     mousePosition = {
@@ -26,8 +26,10 @@ export class CursorComponent implements OnInit {
     };
 
     tau = Math.PI * 2;
-    baseRadius = 50;
-    circles = 10;
+    baseRadius = 75;
+    circles = 60;
+    sizeStep = this.baseRadius / this.circles;
+    colorVariance = 360 / this.circles;
 
     positions: { x: number, y: number }[] = [];
 
@@ -36,7 +38,7 @@ export class CursorComponent implements OnInit {
         // @ts-ignore
         this.canvasCursor = this.canvasCursorREf.nativeElement;
         // @ts-ignore
-        this.ctx = this.canvasCursor.getContext('2d');
+        this.context = this.canvasCursor.getContext('2d');
         requestAnimationFrame(this.draw.bind(this));
 
     }
@@ -63,7 +65,7 @@ export class CursorComponent implements OnInit {
             this.positions.push({x: 0, y: 0});
         }
 
-        this.ctx.clearRect(0, 0, this.canvasCursor?.width as number, this.canvasCursor?.height as number);
+        this.context.clearRect(0, 0, this.canvasCursor?.width as number, this.canvasCursor?.height as number);
 
         let i;
         for (i = 0; i < this.circles; i++) {
@@ -74,9 +76,10 @@ export class CursorComponent implements OnInit {
                 (this.mousePosition.y - this.positions[i].y) * this.easeFactor :
                 (this.positions[i - 1].y - this.positions[i].y) * this.easeFactor;
 
-            this.ctx.beginPath();
-            this.ctx.arc(this.positions[i].x, this.positions[i].y, this.baseRadius, 0, this.tau);
-            this.ctx.stroke();
+            this.context.beginPath();
+            this.context.arc(this.positions[i].x, this.positions[i].y, this.baseRadius - (this.sizeStep * i), 0, this.tau);
+            this.context.strokeStyle = `hsla(${this.colorVariance * i}, 100%, 50%, 1.0)`;
+            this.context.stroke();
 
         }
 

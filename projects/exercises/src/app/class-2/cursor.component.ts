@@ -29,11 +29,6 @@ export class CursorComponent implements OnInit {
     baseRadius = 50;
     circles = 10;
 
-    position = {
-        x: 0,
-        y: 0
-    };
-
     positions: { x: number, y: number }[] = [];
 
     ngOnInit(): void {

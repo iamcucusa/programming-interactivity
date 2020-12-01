@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {EmojiComponent} from './emoji.component';
 
 const routes: Routes = [
-  { path: '', component: EmojiComponent },
+  { path: 'emoji', component: EmojiComponent },
 ];
 
 @NgModule({

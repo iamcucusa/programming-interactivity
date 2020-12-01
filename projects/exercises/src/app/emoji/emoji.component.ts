@@ -3,9 +3,9 @@ import {Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angu
 @Component({
     selector: 'app-welcome',
     template: `
-        <canvas #canvasEmoji width="600" height="300"></canvas>
+        <canvas class="emoji-canvas" #canvasEmoji width="600" height="300"></canvas>
     `,
-    styles: ['canvas { border-style: solid }'],
+    styles: ['.emoji-canvas { border-style: solid }'],
     encapsulation: ViewEncapsulation.None
 })
 export class EmojiComponent implements OnInit {
@@ -24,9 +24,6 @@ export class EmojiComponent implements OnInit {
         this.ctx = this.canvasEmoji.nativeElement.getContext('2d');
         this.renderHappyFace(this.ctx);
 
-    }
-
-    animate(): void {
     }
 
     renderHappyFace(ctx: CanvasRenderingContext2D): void {

@@ -28,6 +28,8 @@ export class Breakout2DComponent implements AfterViewInit {
     dx = 2;
     dy = -2;
 
+    ballRadius = 10;
+
     ngAfterViewInit(): void {
         this.breakoutCanvas = this.breakoutRef.nativeElement;
         this.context = this.breakoutCanvas.getContext('2d');
@@ -49,7 +51,7 @@ export class Breakout2DComponent implements AfterViewInit {
 
     drawBall(): void {
         this.context?.beginPath();
-        this.context?.arc(this.position.x, this.position.y, 10, 0, Math.PI * 2);
+        this.context?.arc(this.position.x, this.position.y, this.ballRadius, 0, Math.PI * 2);
         // @ts-ignore
         this.context?.fillStyle = '#0095DD';
         this.context?.fill();
@@ -61,6 +63,15 @@ export class Breakout2DComponent implements AfterViewInit {
         this.context?.clearRect(0, 0, this.breakoutCanvas.width, this.breakoutCanvas.height);
         this.drawBall();
         this.position = {...this.position, x: this.position.x + this.dx, y: this.position.y + this.dy};
+
+        // @ts-ignore
+        if (this.position.x + this.dx > this.breakoutCanvas?.width - this.ballRadius || this.position.x + this.dx < this.ballRadius) {
+            this.dx = -this.dx;
+        }
+        // @ts-ignore
+        if (this.position.y + this.dy > this.breakoutCanvas?.height - this.ballRadius || this.position.y + this.dy < this.ballRadius) {
+            this.dy = -this.dy;
+        }
     }
 
 }

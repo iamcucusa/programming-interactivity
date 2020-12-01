@@ -39,7 +39,26 @@ export class Breakout2DComponent implements AfterViewInit {
 
     interval: NodeJS.Timeout | undefined;
 
+    bricks: { x: number, y: number }[][] = [];
+    brickRowCount = 3;
+    brickColumnCount = 5;
+    brickWidth = 75;
+    brickHeight = 20;
+    brickPadding = 10;
+    brickOffsetTop = 30;
+    brickOffsetLeft = 30;
+
     ngAfterViewInit(): void {
+
+        for (let c = 0; c < this.brickColumnCount; c++) {
+            // @ts-ignore
+            this.bricks[c] = [];
+            for (let r = 0; r < this.brickRowCount; r++) {
+                // @ts-ignore
+                this.bricks[c][r] = {x: 0, y: 0};
+            }
+        }
+
         this.breakoutCanvas = this.breakoutRef.nativeElement;
         this.context = this.breakoutCanvas.getContext('2d');
         this.interval = setInterval(this.draw.bind(this), 10);
@@ -95,9 +114,29 @@ export class Breakout2DComponent implements AfterViewInit {
         this.context?.closePath();
     }
 
+    drawBricks(): void {
+        let brickX;
+        let brickY;
+        for (let c = 0; c < this.brickColumnCount; c++) {
+            for (let r = 0; r < this.brickRowCount; r++) {
+                brickX = (c * (this.brickWidth + this.brickPadding)) + this.brickOffsetLeft;
+                brickY = (r * (this.brickHeight + this.brickPadding)) + this.brickOffsetTop;
+                this.bricks[c][r].x = brickX;
+                this.bricks[c][r].y = brickY;
+                this.context?.beginPath();
+                this.context?.rect(brickX, brickY, this.brickWidth, this.brickHeight);
+                // @ts-ignore
+                this.context?.fillStyle = '#0095DD';
+                this.context?.fill();
+                this.context?.closePath();
+            }
+        }
+    }
+
     draw(): void {
         // @ts-ignore
         this.context?.clearRect(0, 0, this.breakoutCanvas.width, this.breakoutCanvas.height);
+        this.drawBricks();
         this.drawBall();
         this.drawPaddle();
         this.position = {...this.position, x: this.position.x + this.dx, y: this.position.y + this.dy};

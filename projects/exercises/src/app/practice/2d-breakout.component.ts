@@ -20,11 +20,18 @@ export class Breakout2DComponent implements AfterViewInit {
     canvasWidth = 480;
     canvasHeight = 320;
 
+    position = {
+        x: this.canvasWidth / 2,
+        y: this.canvasHeight - 30
+    };
+
+    dx = 2;
+    dy = -2;
 
     ngAfterViewInit(): void {
         this.breakoutCanvas = this.breakoutRef.nativeElement;
         this.context = this.breakoutCanvas.getContext('2d');
-        this.print();
+        setInterval(this.draw.bind(this), 10);
 
     }
 
@@ -40,29 +47,20 @@ export class Breakout2DComponent implements AfterViewInit {
         this.sizeCanvas();
     }
 
-
-    print(): void {
+    drawBall(): void {
         this.context?.beginPath();
-        this.context?.rect(20, 40, 50, 50);
+        this.context?.arc(this.position.x, this.position.y, 10, 0, Math.PI * 2);
         // @ts-ignore
-        this.context.fillStyle = '#FF0000';
+        this.context?.fillStyle = '#0095DD';
         this.context?.fill();
         this.context?.closePath();
+    }
 
-        this.context?.beginPath();
-        this.context?.arc(240, 160, 20, 0, Math.PI * 2, false);
+    draw(): void {
         // @ts-ignore
-        this.context.fillStyle = 'green';
-        this.context?.fill();
-        this.context?.closePath();
-
-        this.context?.beginPath();
-        this.context?.rect(160, 10, 100, 40);
-        // @ts-ignore
-        this.context.strokeStyle = 'rgba(0, 0, 255, 0.5)';
-        this.context?.stroke();
-        this.context?.closePath();
-
+        this.context?.clearRect(0, 0, this.breakoutCanvas.width, this.breakoutCanvas.height);
+        this.drawBall();
+        this.position = {...this.position, x: this.position.x + this.dx, y: this.position.y + this.dy};
     }
 
 }

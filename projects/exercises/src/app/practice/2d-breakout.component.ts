@@ -37,10 +37,12 @@ export class Breakout2DComponent implements AfterViewInit {
     rightPressed = false;
     leftPressed = false;
 
+    interval: NodeJS.Timeout | undefined;
+
     ngAfterViewInit(): void {
         this.breakoutCanvas = this.breakoutRef.nativeElement;
         this.context = this.breakoutCanvas.getContext('2d');
-        setInterval(this.draw.bind(this), 10);
+        this.interval = setInterval(this.draw.bind(this), 10);
 
     }
 
@@ -104,9 +106,19 @@ export class Breakout2DComponent implements AfterViewInit {
         if (this.position.x + this.dx > this.breakoutCanvas?.width - this.ballRadius || this.position.x + this.dx < this.ballRadius) {
             this.dx = -this.dx;
         }
-        // @ts-ignore
-        if (this.position.y + this.dy > this.breakoutCanvas?.height - this.ballRadius || this.position.y + this.dy < this.ballRadius) {
+
+        if (this.position.y + this.dy < this.ballRadius) {
             this.dy = -this.dy;
+            // @ts-ignore
+        } else if (this.position.y + this.dy > this.breakoutCanvas?.height - this.ballRadius) {
+            if (this.position.x > this.paddleX && this.position.x < this.paddleX + this.paddleWidth) {
+                this.dy = -this.dy;
+            } else {
+                alert('GAME OVER');
+                document.location.reload();
+                // @ts-ignore
+                clearInterval(this.interval);
+            }
         }
 
         if (this.rightPressed) {

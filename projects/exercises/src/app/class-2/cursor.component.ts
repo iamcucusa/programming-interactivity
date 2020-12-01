@@ -17,6 +17,8 @@ export class CursorComponent implements OnInit {
 
     canvasWidth = 1000;
     canvasHeight = 500;
+    easeFactor = 0.25;
+
 
     mousePosition = {
         x: 0,
@@ -25,13 +27,17 @@ export class CursorComponent implements OnInit {
 
     tau = Math.PI * 2;
     baseRadius = 50;
+    circles = 10;
 
     position = {
         x: 0,
         y: 0
     };
 
+    positions: { x: number, y: number }[] = [];
+
     ngOnInit(): void {
+
         // @ts-ignore
         this.canvasCursor = this.canvasCursorREf.nativeElement;
         // @ts-ignore
@@ -57,13 +63,28 @@ export class CursorComponent implements OnInit {
 
     draw(): void {
 
-        this.position.x += (this.mousePosition.x - this.position.x) * 0.2;
-        this.position.y += (this.mousePosition.y - this.position.y) * 0.2;
+        let y;
+        for (y = 0; y < this.circles; y++) {
+            this.positions.push({x: 0, y: 0});
+        }
 
         this.ctx.clearRect(0, 0, this.canvasCursor?.width as number, this.canvasCursor?.height as number);
-        this.ctx.beginPath();
-        this.ctx.arc(this.position.x, this.position.y, this.baseRadius, 0, this.tau);
-        this.ctx.stroke();
+
+        let i;
+        for (i = 0; i < this.circles; i++) {
+            this.positions[i].x += i === 0 ?
+                (this.mousePosition.x - this.positions[i].x) * this.easeFactor :
+                (this.positions[i - 1].x - this.positions[i].x) * this.easeFactor;
+            this.positions[i].y += i === 0 ?
+                (this.mousePosition.y - this.positions[i].y) * this.easeFactor :
+                (this.positions[i - 1].y - this.positions[i].y) * this.easeFactor;
+
+            this.ctx.beginPath();
+            this.ctx.arc(this.positions[i].x, this.positions[i].y, this.baseRadius, 0, this.tau);
+            this.ctx.stroke();
+
+        }
+
         requestAnimationFrame(this.draw.bind(this));
 
     }

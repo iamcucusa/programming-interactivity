@@ -48,6 +48,21 @@ export class Breakout2DComponent implements AfterViewInit {
         this.context.fillStyle = '#FF0000';
         this.context?.fill();
         this.context?.closePath();
+
+        this.context?.beginPath();
+        this.context?.arc(240, 160, 20, 0, Math.PI * 2, false);
+        // @ts-ignore
+        this.context.fillStyle = 'green';
+        this.context?.fill();
+        this.context?.closePath();
+
+        this.context?.beginPath();
+        this.context?.rect(160, 10, 100, 40);
+        // @ts-ignore
+        this.context.strokeStyle = 'rgba(0, 0, 255, 0.5)';
+        this.context?.stroke();
+        this.context?.closePath();
+
     }
 
 }

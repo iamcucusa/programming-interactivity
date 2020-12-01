@@ -26,19 +26,19 @@ export class CursorComponent implements OnInit {
     tau = Math.PI * 2;
     baseRadius = 50;
 
-
     position = {
         x: 0,
         y: 0
     };
 
-    speed = {
-        x: 6,
-        y: 6
-    };
+    ngOnInit(): void {
+        // @ts-ignore
+        this.canvasCursor = this.canvasCursorREf.nativeElement;
+        // @ts-ignore
+        this.ctx = this.canvasCursor.getContext('2d');
+        requestAnimationFrame(this.draw.bind(this));
 
-    size = 100;
-    hue = 300;
+    }
 
     @HostListener('window:resize', ['$event'])
     onResize(event: Event): void {
@@ -54,26 +54,16 @@ export class CursorComponent implements OnInit {
         this.mousePosition.y = event.clientY;
     }
 
-    constructor() {
-    }
-
-
-    ngOnInit(): void {
-        // @ts-ignore
-        this.canvasCursor = this.canvasCursorREf.nativeElement;
-        // @ts-ignore
-        this.ctx = this.canvasCursor.getContext('2d');
-        requestAnimationFrame(this.draw.bind(this));
-
-    }
 
     draw(): void {
 
+        this.position.x += (this.mousePosition.x - this.position.x) * 0.2;
+        this.position.y += (this.mousePosition.y - this.position.y) * 0.2;
+
         this.ctx.clearRect(0, 0, this.canvasCursor?.width as number, this.canvasCursor?.height as number);
         this.ctx.beginPath();
-        this.ctx.arc(this.mousePosition.x, this.mousePosition.y, this.baseRadius, 0, this.tau);
+        this.ctx.arc(this.position.x, this.position.y, this.baseRadius, 0, this.tau);
         this.ctx.stroke();
-
         requestAnimationFrame(this.draw.bind(this));
 
     }

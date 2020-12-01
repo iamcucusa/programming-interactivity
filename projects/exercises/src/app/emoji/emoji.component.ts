@@ -5,8 +5,7 @@ import {Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angu
     template: `
         <canvas class="emoji-canvas" #canvasEmoji width="600" height="300"></canvas>
     `,
-    styles: ['.emoji-canvas { border-style: solid }'],
-    encapsulation: ViewEncapsulation.None
+    styles: ['.emoji-canvas { border-style: solid }']
 })
 export class EmojiComponent implements OnInit {
 

@@ -3,9 +3,12 @@ import {AfterViewInit, Component, ElementRef, HostListener, ViewChild} from '@an
 @Component({
     selector: 'app-print-10',
     template: `
-        <canvas class="canvas-print-10" #print10 width="{{canvasWidth}}" height="{{canvasHeight}}"></canvas>
+        <button class="app-print-10-reload" nz-button (click)="print()">Print me again</button>
+        <div>
+            <canvas class="canvas-print-10" #print10 width="{{canvasWidth}}" height="{{canvasHeight}}"></canvas>
+        </div>
     `,
-    styles: ['.canvas-print-10 { border-style: solid }'],
+    styles: ['.canvas-print-10 { border-style: solid } .app-print-10-reload { margin-bottom: 16px}'],
 })
 export class Print10Component implements AfterViewInit {
 
@@ -24,7 +27,7 @@ export class Print10Component implements AfterViewInit {
     ngAfterViewInit(): void {
         this.canvasPrint10 = this.canvasPrint10REf.nativeElement;
         this.context = this.canvasPrint10.getContext('2d');
-        this.print10();
+        this.print();
 
     }
 
@@ -38,6 +41,7 @@ export class Print10Component implements AfterViewInit {
     @HostListener('window:resize', ['$event'])
     onResize(event: Event): void {
         this.sizeCanvas();
+        this.print();
     }
 
     backSlash(x: number, y: number, size: number): void {
@@ -55,7 +59,7 @@ export class Print10Component implements AfterViewInit {
         this.context?.stroke();
     }
 
-    print10(): void {
+    print(): void {
 
 
         // @ts-ignore

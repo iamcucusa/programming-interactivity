@@ -1,8 +1,8 @@
-import {Component, ElementRef, HostListener, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 
 @Component({
     selector: 'app-translate2',
-    template: `
+    template: `        
         <canvas class="canvas-translate2" #translate2 width="{{canvasWidth}}" height="{{canvasHeight}}"></canvas>
     `,
     styles: ['.canvas-translate2 { border-style: solid }'],
@@ -39,20 +39,17 @@ export class Translate2Component implements OnInit {
         this.canvasTranslate.height = this.canvasHeight;
     }
 
-    constructor() {
-    }
-
 
     ngOnInit(): void {
         // @ts-ignore
         this.canvasTranslate = this.canvasTranslateREf.nativeElement;
         // @ts-ignore
         this.ctx = this.canvasTranslate.getContext('2d');
-        requestAnimationFrame(this.draw2.bind(this));
+        requestAnimationFrame(this.draw.bind(this));
 
     }
 
-    draw2(): void {
+    draw(): void {
         this.ctx.fillStyle = `hsla(${this.hue}, 100%, 50%, 0.25)`;
         this.ctx.fillRect(0, 0, this.canvasTranslate?.width as number, this.canvasTranslate?.height as number);
         this.ctx.fillStyle = 'white';
@@ -71,7 +68,7 @@ export class Translate2Component implements OnInit {
         this.position.x += this.speed.x;
         this.position.y += this.speed.y;
 
-        requestAnimationFrame(this.draw2.bind(this));
+        requestAnimationFrame(this.draw.bind(this));
 
     }
 

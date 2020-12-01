@@ -2,7 +2,7 @@ import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/c
 
 @Component({
     selector: 'app-translate2',
-    template: `        
+    template: `
         <canvas class="canvas-translate2" #translate2 width="{{canvasWidth}}" height="{{canvasHeight}}"></canvas>
     `,
     styles: ['.canvas-translate2 { border-style: solid }'],

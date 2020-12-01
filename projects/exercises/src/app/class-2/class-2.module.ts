@@ -6,12 +6,14 @@ import {CursorComponent} from './cursor.component';
 import {Print10Component} from './print-10.component';
 import {NzButtonModule} from 'ng-zorro-antd/button';
 import {CommonModule} from '@angular/common';
+import {MyPrintComponent} from './my-print.component';
+
 
 
 
 
 @NgModule({
   imports: [Class2RoutingModule, CommonModule, NzButtonModule],
-  declarations: [TranslateComponent, Translate2Component, CursorComponent, Print10Component]
+  declarations: [TranslateComponent, Translate2Component, CursorComponent, Print10Component, MyPrintComponent]
 })
 export class Class2Module { }

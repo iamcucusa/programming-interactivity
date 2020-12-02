@@ -37,7 +37,7 @@ export class Breakout2DComponent implements AfterViewInit {
     rightPressed = false;
     leftPressed = false;
 
-    interval: NodeJS.Timeout | undefined;
+    interval: unknown| undefined;
 
     bricks: { x: number, y: number }[][] = [];
     brickRowCount = 3;

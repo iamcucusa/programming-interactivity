@@ -1,5 +1,12 @@
 import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 
+export interface Eyes {
+    x: number;
+    y: number;
+    size: number;
+    spacing: number;
+}
+
 @Component({
     selector: 'app-welcome',
     template: `
@@ -22,7 +29,7 @@ export class EyesComponent implements OnInit {
 
     TAU = Math.PI * 2;
 
-    eyes: { x: number, y: number, size: number, spacing: number }[] = [];
+    eyes: Eyes[] = [];
 
     mousePosition = {
         x: 0,
@@ -65,8 +72,6 @@ export class EyesComponent implements OnInit {
             spacing: size * 0.1
         });
 
-        console.log(event, 'event');
-
     }
 
     @HostListener('mousemove', ['$event'])
@@ -79,7 +84,7 @@ export class EyesComponent implements OnInit {
         return Math.round((Math.random() * (max - min)) + min);
     }
 
-    drawEye(x: number, y: number, eyePair: { x: number, y: number, size: number }): void {
+    drawEye(x: number, y: number, eyePair: Eyes): void {
 
         this.context?.save();
 
@@ -93,16 +98,21 @@ export class EyesComponent implements OnInit {
 
         this.context?.beginPath();
         this.context?.arc(0, 0, eyePair.size, 0, this.TAU);
+        // @ts-ignore
+        this.context?.fillStyle = 'white';
         this.context?.stroke();
+        this.context?.fill();
 
         this.context?.beginPath();
-        this.context?.arc(- eyePair.size * 0.5, 0, eyePair.size * 0.2, 0, this.TAU);
+        this.context?.arc(-eyePair.size * 0.5, 0, eyePair.size * 0.2, 0, this.TAU);
+        // @ts-ignore
+        this.context?.fillStyle = 'black';
         this.context?.fill();
 
         this.context?.restore();
     }
 
-    drawEyes(eyePair: { x: number, y: number, size: number, spacing: number}): void {
+    drawEyes(eyePair: Eyes): void {
 
         const leftX = eyePair.x - eyePair.size;
 

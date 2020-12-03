@@ -19,9 +19,12 @@ export class ProximityComponent implements OnInit {
     canvasWidth = 857;
     canvasHeight = 553;
     size = 40;
+    maxSize = 15;
     TAU = Math.PI * 2;
+    proximity = 180;
+    easeFactor = 0.25;
 
-    circles: { x: number, y: number, radius: number }[] = [];
+    circles: { x: number, y: number, radius: number, growth: number }[] = [];
     mousePosition = {
         x: 0,
         y: 0
@@ -73,7 +76,7 @@ export class ProximityComponent implements OnInit {
         for (i = 0; i < amountOfCircles; i++) {
             x = i % columns;
             y = Math.floor(i / columns);
-            this.circles.push({x, y, radius: 2});
+            this.circles.push({x, y, radius: 2, growth: 0});
         }
 
 
@@ -99,15 +102,19 @@ export class ProximityComponent implements OnInit {
             y = circle.y * this.size;
             sideA = x - this.mousePosition.x;
             sideB = y - this.mousePosition.y;
+
             distance = Math.sqrt(Math.pow(sideA, 2) + Math.pow(sideB, 2));
             // @ts-ignore
+
             maxDistance = Math.sqrt(Math.pow(this.canvasProximity?.width, 2) + Math.pow(this.canvasProximity?.height, 2));
-            growth = this.map(distance, 0, 100, 60, 0);
+
+            growth = this.map(distance, 0, this.proximity, this.maxSize, 0);
             if (growth < 0) {
                 growth = 0;
             }
+            circle.growth += (growth - circle.growth) * this.easeFactor;
             this.context?.beginPath();
-            this.context?.arc(x, y, circle.radius + growth, 0, this.TAU);
+            this.context?.arc(x, y, circle.radius + circle.growth, 0, this.TAU);
             this.context?.fill();
         }
 
